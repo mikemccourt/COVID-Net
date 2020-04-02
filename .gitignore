@@ -16,3 +16,8 @@ train_tf.py
 archive/
 requirements.txt
 test_dups.py
+
+
+# Adding in some things that I don't want to change
+*.ipynb
+.idea/
