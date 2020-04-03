@@ -4,7 +4,7 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import ReduceLROnPlateau
 
 import numpy as np
-import os, pathlib, time, cv2
+import os, pathlib, time, cv2, json
 from sklearn.metrics import confusion_matrix
 from data_generator import DataGenerator, BalanceDataGenerator
 from form_model_structure import form_COVIDNet_structure
@@ -137,6 +137,20 @@ def train_model(
     run_id = str(int(time.time() * 1e6))
     save_path = os.path.join(main_output_directory, run_id)
     pathlib.Path(save_path).mkdir(parents=True, exist_ok=True)
+    tunable_parameters = {
+        'covid_class_weight': covid_class_weight,
+        'batch_size': batch_size,
+        'epochs': epochs,
+        'learning_rate': learning_rate,
+        'factor': factor,
+        'patience': patience,
+        'augmentation_translation_magnitude': augmentation_translation_magnitude,
+        'augmentation_rotation_magnitude': augmentation_rotation_magnitude,
+        'augmentation_brightness_magnitude': augmentation_brightness_magnitude,
+    }
+    model_meta_path = os.path.join(save_path, 'meta.json')
+    with open(model_meta_path, 'w') as f:
+        json.dump(tunable_parameters, f)
 
     callbacks = get_callbacks(save_path, factor, patience)
     train_generator, test_generator = form_data_generators(
