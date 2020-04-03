@@ -1,6 +1,6 @@
 from keras.applications.resnet_v2 import ResNet50V2
-from tensorflow.keras.models import Model
-from tensorflow.keras.layers import Dense, GlobalAveragePooling2D, Input, Flatten
+from keras.models import Model
+from keras.layers import Dense, GlobalAveragePooling2D, Flatten
 
 
 def form_COVIDNet_structure(num_classes, flatten=True, checkpoint=''):

@@ -1,7 +1,6 @@
-import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.callbacks import ReduceLROnPlateau
+import keras
+from keras.optimizers import Adam
+from keras.callbacks import ReduceLROnPlateau
 
 import numpy as np
 import os, pathlib, time, cv2, json
