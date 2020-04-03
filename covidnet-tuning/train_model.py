@@ -30,16 +30,17 @@ def get_callbacks(save_path, factor, patience):
     )
     callbacks.append(lr_schedule)  # reduce learning rate when stuck
 
-    checkpoint_path = os.path.join(save_path, f'cp-{epoch:02d}-{val_loss:.2f}.hdf5')
-    checkpoint = keras.callbacks.ModelCheckpoint(
-        checkpoint_path,
-        verbose=1,
-        save_best_only=False,
-        save_weights_only=True,
-        mode='min',
-        period=1,
-    )
-    callbacks.append(checkpoint)
+    # Need to figure out how the epoch/val_loss thing works (no idea right now)
+    # checkpoint_path = os.path.join(save_path, f'cp-{epoch:02d}-{val_loss:.2f}.hdf5')
+    # checkpoint = keras.callbacks.ModelCheckpoint(
+    #     checkpoint_path,
+    #     verbose=1,
+    #     save_best_only=False,
+    #     save_weights_only=True,
+    #     mode='min',
+    #     period=1,
+    # )
+    # callbacks.append(checkpoint)
 
     class SaveAsCKPT(keras.callbacks.Callback):
         def __init__(self):
