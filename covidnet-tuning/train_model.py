@@ -42,15 +42,15 @@ def get_callbacks(save_path, factor, patience):
     # )
     # callbacks.append(checkpoint)
 
-    class SaveAsCKPT(keras.callbacks.Callback):
-        def __init__(self):
-            self.saver = tf.train.Saver()
-            self.sess = keras.backend.get_session()
-
-        def on_epoch_end(self, epoch, logs=None):
-            checkpoint_path = os.path.join(save_path, f'cp-{epoch:02d}.ckpt')
-            self.saver.save(self.sess, checkpoint_path)
-    callbacks.append(SaveAsCKPT())
+    # class SaveAsCKPT(keras.callbacks.Callback):
+    #     def __init__(self):
+    #         self.saver = tf.train.Saver()
+    #         self.sess = keras.backend.get_session()
+    #
+    #     def on_epoch_end(self, epoch, logs=None):
+    #         checkpoint_path = os.path.join(save_path, f'cp-{epoch:02d}.ckpt')
+    #         self.saver.save(self.sess, checkpoint_path)
+    # callbacks.append(SaveAsCKPT())
 
     return callbacks
 
