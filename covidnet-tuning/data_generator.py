@@ -62,7 +62,7 @@ class BalanceDataGenerator(keras.utils.Sequence):
         self.on_epoch_end()
 
         if self.debug:
-            print(f'Initialization of {self.__name__} completed, {len(self.datasets[0])}, {len(self.datasets[1])}')
+            print(f'Initialization of {self} completed, {len(self.datasets[0])}, {len(self.datasets[1])}')
 
     @property
     def num_classes(self):
