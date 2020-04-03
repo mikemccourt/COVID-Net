@@ -63,6 +63,7 @@ def form_data_generators(
     augmentation_translation_magnitude,
     augmentation_rotation_magnitude,
     augmentation_brightness_magnitude,
+    data_directory='data',
 ):
     file = open(training_file, 'r')
     train_data_locations = file.readlines()
@@ -77,8 +78,16 @@ def form_data_generators(
         augmentation_rotation_magnitude,
         augmentation_brightness_magnitude,
         is_training=True,
+        data_directory=data_directory,
     )
-    test_generator = DataGenerator(test_data_locations, mapping, input_shape, batch_size, is_training=False)
+    test_generator = DataGenerator(
+        test_data_locations,
+        mapping,
+        input_shape,
+        batch_size,
+        is_training=False,
+        data_directory=data_directory,
+    )
     return train_generator, test_generator
 
 
@@ -125,6 +134,7 @@ def train_model(
     augmentation_rotation_magnitude=10,
     augmentation_brightness_magnitude=.1,
     main_output_directory='./output/',
+    data_directory='data',
     debug=True,
 ):
     mapping = DEFAULT_MAPPING if mapping is None else mapping
@@ -162,6 +172,7 @@ def train_model(
         augmentation_translation_magnitude,
         augmentation_rotation_magnitude,
         augmentation_brightness_magnitude,
+        data_directory=data_directory,
     )
     if debug:
         print(f'Data generators created, {len(train_generator)} training, {len(test_generator)} testing')

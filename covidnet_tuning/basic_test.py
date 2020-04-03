@@ -14,6 +14,7 @@ def main():
         augmentation_translation_magnitude=20,
         augmentation_rotation_magnitude=10,
         augmentation_brightness_magnitude=.1,
+        data_directory='data',
     )
 
 
