@@ -2,12 +2,12 @@ from train_model import train_model
 
 
 def main():
-    train_model(
-        'train_COVIDx.txt',
-        'test_COVIDx.txt',
+    return train_model(
+        'faketrain.txt',
+        'faketest.txt',
         covid_class_weight=25,
-        batch_size=8,
-        epochs=10,
+        batch_size=16,
+        epochs=3,
         learning_rate=2e-5,
         factor=0.7,
         patience=5,
@@ -20,4 +20,4 @@ def main():
 if __name__ == '__main__':
     main()
 
-# To run PYTHONPATH=covidnet-tuning python basic_test.py
+# To run PYTHONPATH=covidnet-tuning python covidnet-tuning/basic_test.py
