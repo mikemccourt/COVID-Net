@@ -5,8 +5,8 @@ from keras.callbacks import ReduceLROnPlateau
 import numpy as np
 import os, pathlib, time, cv2, json
 from sklearn.metrics import confusion_matrix
-from data_generator import DataGenerator, BalanceDataGenerator
-from form_model_structure import form_COVIDNet_structure
+from covidnet_tuning.data_generator import DataGenerator, BalanceDataGenerator
+from covidnet_tuning.form_model_structure import form_COVIDNet_structure
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'  # which gpu to train on
 
