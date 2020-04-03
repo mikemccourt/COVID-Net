@@ -1,4 +1,4 @@
-from train_model import train_model
+from covidnet_tuning.train_model import train_model
 
 
 def main():
