@@ -63,8 +63,6 @@ def form_data_generators(
 ):
     file = open(training_file, 'r')
     train_data_locations = file.readlines()
-    file = open(testing_file, 'r')
-    test_data_locations = file.readlines()
     train_generator = BalanceDataGenerator(
         train_data_locations,
         mapping,
@@ -76,6 +74,9 @@ def form_data_generators(
         is_training=True,
         data_directory=data_directory,
     )
+
+    file = open(testing_file, 'r')
+    test_data_locations = file.readlines()
     test_generator = DataGenerator(
         test_data_locations,
         mapping,
@@ -87,22 +88,15 @@ def form_data_generators(
     return train_generator, test_generator
 
 
-def form_confusion_matrix(test_file, mapping, model):
+def form_confusion_matrix(test_generator, model):
     y_test = []
     pred = []
-    with open(test_file, 'r') as f:
-        for line in f:
-            split_line = line.split()
-            x = cv2.imread(os.path.join('data', 'test', split_line[1]))
-            x = cv2.resize(x, (224, 224))
-            x = x.astype('float32') / 255.0
-            y_test.append(mapping[split_line[2]])
-            pred.append(np.array(model.predict(np.expand_dims(x, axis=0))).argmax(axis=1))
-    y_test = np.array(y_test)
-    pred = np.array(pred)
+    for batch_num in range(len(test_generator)):
+        for x, y_one_hot in zip(*test_generator[batch_num]):
+            y_test.append(np.argmax(y_one_hot))
+            pred.append(np.array(model.predict(np.expand_dims(x, axis=0))).argmax(axis=1)[0])
 
-    matrix = confusion_matrix(y_test, pred)
-    return matrix.astype('float')
+    return confusion_matrix(y_test, pred).astype('float')
 
 
 def train_model(
@@ -179,4 +173,4 @@ def train_model(
     if debug:
         print('Model training completed')
 
-    return form_confusion_matrix(test_file, mapping, model)
+    return form_confusion_matrix(test_generator, model)
