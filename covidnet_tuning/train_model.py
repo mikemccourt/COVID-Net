@@ -1,4 +1,3 @@
-import keras
 from keras.optimizers import Adam
 from keras.callbacks import ReduceLROnPlateau
 
@@ -9,9 +8,6 @@ from covidnet_tuning.data_generator import DataGenerator, BalanceDataGenerator
 from covidnet_tuning.form_model_structure import form_COVIDNet_structure
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'  # which gpu to train on
-
-DEFAULT_MAPPING = {'normal': 0, 'pneumonia': 1, 'COVID-19': 2}
-DEFAULT_INPUT_SHAPE = (224, 224)
 
 
 # Data is assumed to be stored in <base_dir>/data/train and <base_dir>/data/test
@@ -108,22 +104,12 @@ def form_confusion_matrix(test_file, mapping, model):
     matrix = confusion_matrix(y_test, pred)
     return matrix.astype('float')
 
-    # Need to move this to later
-    # class_acc = [matrix[i, i] / np.sum(matrix[i, :]) if np.sum(matrix[i, :]) else 0 for i in range(len(matrix))]
-    # print('Sens Normal: {0:.3f}, Pneumonia: {1:.3f}, COVID-19: {2:.3f}'.format(class_acc[0],
-    #                                                                            class_acc[1],
-    #                                                                            class_acc[2]))
-    # ppvs = [matrix[i, i] / np.sum(matrix[:, i]) if np.sum(matrix[:, i]) else 0 for i in range(len(matrix))]
-    # print('PPV Normal: {0:.3f}, Pneumonia {1:.3f}, COVID-19: {2:.3f}'.format(ppvs[0],
-    #                                                                          ppvs[1],
-    #                                                                          ppvs[2]))
-
 
 def train_model(
     train_file,
     test_file,
-    mapping=None,
-    input_shape=None,
+    mapping,
+    input_shape,
     covid_class_weight=25,
     batch_size=8,
     epochs=10,
@@ -133,12 +119,10 @@ def train_model(
     augmentation_translation_magnitude=20,
     augmentation_rotation_magnitude=10,
     augmentation_brightness_magnitude=.1,
-    main_output_directory='./output/',
+    main_output_directory='output',
     data_directory='data',
     debug=True,
 ):
-    mapping = DEFAULT_MAPPING if mapping is None else mapping
-    input_shape = DEFAULT_INPUT_SHAPE if input_shape is None else input_shape
     class_weight = {
         class_num: covid_class_weight if diagnosis != 'COVID-19' else 1.0
         for diagnosis, class_num in mapping.items()
@@ -183,7 +167,7 @@ def train_model(
     if debug:
         print('Model compiled, ready for training')
 
-    stuff = model.fit_generator(
+    model.fit_generator(
         train_generator,
         callbacks=callbacks,
         validation_data=test_generator,
@@ -194,6 +178,5 @@ def train_model(
     )
     if debug:
         print('Model training completed')
-        print(stuff)
 
     return form_confusion_matrix(test_file, mapping, model)
