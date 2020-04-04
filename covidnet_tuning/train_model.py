@@ -162,7 +162,7 @@ def train_model(
         print(f'Data generators created, {len(train_generator)} training, {len(test_generator)} testing')
 
     optimizer = Adam(learning_rate=learning_rate, amsgrad=True)
-    model = form_COVIDNet_structure(len(mapping))
+    model = form_COVIDNet_structure(mapping, input_shape)
     model.compile(loss='categorical_crossentropy', optimizer=optimizer, metrics=['accuracy'])
     if debug:
         print('Model compiled, ready for training')
