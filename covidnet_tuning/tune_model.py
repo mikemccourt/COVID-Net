@@ -19,8 +19,8 @@ def fetch_sigopt_api_token(filename=None, env_name='SIGOPT_API_TOKEN'):
 
 
 def generate_metrics_from_confusion_matrix(matrix, mapping, secret):
-    class_accuracy = np.diag(matrix) / np.sum(matrix, axis=1)
-    ppv = np.diag(matrix) / np.sum(matrix, axis=0)
+    class_accuracy = np.diag(matrix) / (np.sum(matrix, axis=1) + 1e-10)  # Add a fudge factor to avoid 1/0
+    ppv = np.diag(matrix) / (np.sum(matrix, axis=0) + 1e-10)
     metrics = {}
     for class_name, index in mapping.items():
         identifier = f'class_{index}' if secret else class_name
@@ -29,7 +29,7 @@ def generate_metrics_from_confusion_matrix(matrix, mapping, secret):
     return metrics
 
 
-def create_sigopt_experiment(mapping, secret, budget, name=None, exp_type='random'):
+def create_sigopt_experiment_meta(mapping, secret, budget, name=None, exp_type='random'):
     base_metrics_dict = generate_metrics_from_confusion_matrix(np.eye(len(mapping)), mapping, secret)
     metrics = [{'name': m, 'objective': 'maximize', 'strategy': 'store'} for m in base_metrics_dict]
     metrics[0]['strategy'] = 'optimize'

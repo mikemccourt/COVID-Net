@@ -21,4 +21,4 @@ def main():
 if __name__ == '__main__':
     main()
 
-# To run PYTHONPATH=covidnet-tuning python covidnet-tuning/basic_test.py
+# To run PYTHONPATH=. python covidnet_tuning/basic_test.py

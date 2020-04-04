@@ -87,7 +87,7 @@ class BalanceDataGenerator(DataGenerator):
         data_directory='data',
         shuffle_data=True,
         augmentation=True,
-        debug=True,
+        debug=False,
     ):
         # Have to define this before super to allow on_epoch_end to get called
         self.shuffle_data = shuffle_data
@@ -128,7 +128,7 @@ class BalanceDataGenerator(DataGenerator):
         self.on_epoch_end()
 
         if self.debug:
-            print(f'Initialization of {self} completed, {len(self.datasets[0])}, {len(self.datasets[1])}')
+            print(f'Initialization of {type(self)} completed, {len(self.datasets[0])}, {len(self.datasets[1])}')
 
     # To reach the balance, we pretend that the data is only as long as the normal + pneumonia cases
     def __len__(self):

@@ -1,7 +1,11 @@
 import argparse
 from sigopt import Connection
 
-from covidnet_tuning.tune_model import fetch_sigopt_api_token, create_sigopt_experiment, create_sigopt_observation_dict
+from covidnet_tuning.tune_model import (
+    fetch_sigopt_api_token,
+    create_sigopt_experiment_meta,
+    create_sigopt_observation_dict,
+)
 
 
 DEFAULT_MAPPING = {'normal': 0, 'pneumonia': 1, 'COVID-19': 2}
@@ -34,20 +38,21 @@ def main():
     if args.exp_id:
         experiment = conn.experiments(args.exp_id).fetch()
     else:
-        experiment = create_sigopt_experiment(
+        experiment_meta = create_sigopt_experiment_meta(
             DEFAULT_MAPPING,
             args.secret,
             args.budget,
             name=args.name,
             exp_type=args.exp_type
         )
+        experiment = conn.experiments().create(**experiment_meta)
     print(
         f'Experiment {experiment.id} loaded, '
         f'{experiment.progress.observation_count}/{experiment.observation_budget} observations completed'
     )
 
     # This check for open suggestions will only grab the first 100 (hopefully there isn't more than 1)
-    open_suggestions = list(conn.experiments(experiment.id).suggestion().fetch(state="open").iterate_pages())
+    open_suggestions = list(conn.experiments(experiment.id).suggestions().fetch(state="open").iterate_pages())
     if len(open_suggestions):
         print(f'{len(open_suggestions)} open suggestions already exist -- those will be resumed first')
 
@@ -65,11 +70,13 @@ def main():
             args.epochs,
             args.secret,
             args.data_directory,
-            args.main_output_directory,
+            args.output_directory,
         )
         conn.experiments(experiment.id).observations().create(**observation_dict)
-        print(f'Observation {k} of {args.budget} completed')
+        print(f'Observation {k + 1} of {args.budget} completed')
 
 
 if __name__ == '__main__':
     main()
+
+# To run PYTHONPATH=. python covidnet_tuning/sigopt_test.py --train-file faketrain.txt --test-file faketest.txt --epochs 4 --sigopt-api-token-file sigopt-api-token --secret --budget 10 --name trial --exp-type random
