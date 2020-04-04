@@ -115,4 +115,4 @@ if __name__ == '__main__':
         checkpoint,
     )
 
-# PYTHONPATH=. python sigopt_tuning.py --epochs 3 --bs 16 --trainfile faketrain.txt --testfile faketest.txt
+# PYTHONPATH=. python minimal_wrapper_test.py --epochs 3 --bs 16 --trainfile faketrain.txt --testfile faketest.txt
