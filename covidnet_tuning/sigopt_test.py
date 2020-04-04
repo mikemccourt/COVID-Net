@@ -82,4 +82,5 @@ def main():
 if __name__ == '__main__':
     main()
 
-# To run PYTHONPATH=. python covidnet_tuning/sigopt_test.py --train-file faketrain.txt --test-file faketest.txt --epochs 4 --sigopt-api-token-file sigopt-api-token --secret --budget 10 --name trial --exp-type random
+# To run my personal testing locally PYTHONPATH=. python covidnet_tuning/sigopt_test.py --train-file faketrain.txt --test-file faketest.txt --epochs 4 --sigopt-api-token client-token --secret --budget 10 --name trial --exp-type random --api-url "http://localhost:5000"
+# To run for real PYTHONPATH=. python covidnet_tuning/sigopt_test.py --train-file train_COVIDx.txt --test-file test_COVIDx.txt --epochs 10 --sigopt-api-token-file sigopt-api-token --secret --budget 10 --name "NN experiment" --exp-type random

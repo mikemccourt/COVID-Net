@@ -5,6 +5,8 @@ def main():
     return train_model(
         'faketrain.txt',
         'faketest.txt',
+        {'normal': 0, 'pneumonia': 1, 'COVID-19': 2},
+        (224, 224),
         covid_class_weight=25,
         batch_size=16,
         epochs=3,
