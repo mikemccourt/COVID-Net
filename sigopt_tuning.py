@@ -18,6 +18,7 @@ def basic_training(
     batch_size,
     trainfile,
     testfile,
+    checkpoint,
 ):
     mapping = {'normal': 0, 'pneumonia': 1, 'COVID-19': 2}
     class_weight = {0: 1., 1: 1., 2: 25.}
@@ -50,7 +51,7 @@ def basic_training(
 
         return callbacks
 
-    model = build_COVIDNet(checkpoint=args.checkpoint)
+    model = build_COVIDNet(checkpoint=checkpoint)
 
     opt = Adam(learning_rate=learning_rate, amsgrad=True)
     callbacks = get_callbacks(runPath)
@@ -95,7 +96,6 @@ if __name__ == '__main__':
     parser.add_argument('--lr', default=0.00002, type=float, help='Learning rate')
     parser.add_argument('--bs', default=8, type=int, help='Batch size')
     parser.add_argument('--epochs', default=10, type=int, help='Number of epochs')
-    parser.add_argument('--name', default='COVIDNet', type=str, help='Name of training folder')
     parser.add_argument('--checkpoint', default='', type=str, help='Start training from existing weights')
     args = parser.parse_args()
 
@@ -104,6 +104,7 @@ if __name__ == '__main__':
     batch_size = args.bs
     trainfile = args.trainfile
     testfile = args.testfile
+    checkpoint = args.checkpoint
 
     basic_training(
         epochs,
@@ -111,6 +112,7 @@ if __name__ == '__main__':
         batch_size,
         trainfile,
         testfile,
+        checkpoint,
     )
 
 # PYTHONPATH=. python sigopt_tuning.py --epochs 3 --bs 16 --trainfile faketrain.txt --testfile faketest.txt
