@@ -26,6 +26,7 @@ def parse_args():
     parser.add_argument('--name', required=False, type=str, help='Experiment name')
     parser.add_argument('--exp-type', required=False, default='random', type=str, help='SigOpt experiment type')
     parser.add_argument('--exp-id', required=False, type=int, help='Exp ID to restart (if one exists)')
+    parser.add_argument('--api-url', required=False, type=str, help='If accessing special SigOpt server')
     return parser.parse_args()
 
 
@@ -33,7 +34,8 @@ def main():
     args = parse_args()
     client_token = args.sigopt_api_token or fetch_sigopt_api_token(filename=args.sigopt_api_token_file)
     conn = Connection(client_token=client_token)
-    conn.set_api_url('http://localhost:5000')
+    if args.api_url:
+        conn.set_api_url(args.api_url)
 
     if args.exp_id:
         experiment = conn.experiments(args.exp_id).fetch()
