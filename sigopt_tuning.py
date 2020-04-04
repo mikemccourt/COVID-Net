@@ -71,7 +71,7 @@ def basic_training(
         y_test.append(mapping[line[2]])
         pred.append(np.array(model.predict(np.expand_dims(x, axis=0))).argmax(axis=1))
     y_test = np.array(y_test)
-    pred = np.array(pred)
+    pred = np.array(pred)[:, 0]
 
     matrix = confusion_matrix(y_test, pred)
     matrix = matrix.astype('float')
@@ -84,10 +84,6 @@ def basic_training(
     print('PPV Normal: {0:.3f}, Pneumonia {1:.3f}, COVID-19: {2:.3f}'.format(ppvs[0],
                                                                              ppvs[1],
                                                                              ppvs[2]))
-
-    print('*** Raw results')
-    print(y_test)
-    print(pred)
 
     return matrix
 
