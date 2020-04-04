@@ -54,14 +54,14 @@ class DataGenerator(keras.utils.Sequence):
         batch_x, batch_y = np.empty((batch_size, *self.input_shape, self.num_channels)), np.zeros(batch_size)
 
         for sample_num, this_file_in_batch in enumerate(batch_files):
-            sample = this_file_in_batch.split()
+            _, filename, class_name = this_file_in_batch.split()
 
             folder = 'train' if self.is_training else 'test'
-            x = cv2.imread(os.path.join(self.data_directory, folder, sample[1]))
+            x = cv2.imread(os.path.join(self.data_directory, folder, filename))
             x = cv2.resize(x, self.input_shape)
 
             x = self._postprocess_image_in_batch(x)
-            y = self.mapping[sample[2]]
+            y = self.mapping[class_name]
 
             batch_x[sample_num] = x
             batch_y[sample_num] = y
