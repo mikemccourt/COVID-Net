@@ -47,6 +47,7 @@ def main():
             name=args.name,
             exp_type=args.exp_type
         )
+        experiment_meta.update({'metadata': {'epochs': args.epochs}})
         experiment = conn.experiments().create(**experiment_meta)
     print(
         f'Experiment {experiment.id} loaded, '
