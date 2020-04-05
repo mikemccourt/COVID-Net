@@ -150,7 +150,7 @@ def basic_training(
         lr_schedule = ReduceLROnPlateau(monitor='val_loss', factor=factor, patience=patience, min_lr=0.000001, min_delta=1e-2)
         callbacks.append(lr_schedule)  # reduce learning rate when stuck
 
-        checkpoint_path = runPath + '/cp-{epoch:02d}-{val_loss:.2f}.hdf5'
+        checkpoint_path = runPath + '/checkpoint.hdf5'
         callbacks.append(keras.callbacks.ModelCheckpoint(checkpoint_path,
                                                          verbose=1, save_best_only=False, save_weights_only=True,
                                                          mode='min', period=1))
