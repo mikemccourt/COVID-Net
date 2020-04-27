@@ -11,11 +11,13 @@ output/
 train_3000.txt
 test_split_v2.txt
 gensynth/
-train.py
-data.py
 export_to_meta.py
-model.py
 train_tf.py
 archive/
 requirements.txt
 test_dups.py
+
+
+# Adding in some things that I don't want to change
+*.ipynb
+.idea/
